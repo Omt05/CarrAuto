@@ -1,0 +1,107 @@
+@model CarrAuto.Models.Service
+
+@{
+    ViewData["Title"] = $"Modifier le service - {Model.Nom}";
+}
+
+<div class="container py-4">
+    <h1>Modifier le service</h1>
+    
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action("Index", "Services")">Services</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Modifier - @Model.Nom</li>
+        </ol>
+    </nav>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form asp-action="Edit" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Id" />
+                        
+                        <div class="form-group mb-3">
+                            <label asp-for="Nom" class="control-label">Nom</label>
+                            <input asp-for="Nom" class="form-control" />
+                            <span asp-validation-for="Nom" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label asp-for="Description" class="control-label">Description</label>
+                            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label asp-for="DetailsSupplementaires" class="control-label">Détails supplémentaires</label>
+                            <textarea asp-for="DetailsSupplementaires" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="DetailsSupplementaires" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label asp-for="PrixEstimatif" class="control-label">Prix estimatif (€)</label>
+                            <input asp-for="PrixEstimatif" class="form-control" />
+                            <span asp-validation-for="PrixEstimatif" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label asp-for="ImageUrl" class="control-label">URL de l'image</label>
+                            <input asp-for="ImageUrl" class="form-control" />
+                            <small class="form-text text-muted">Exemple : /images/services/nom-image.jpeg</small>
+                            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label asp-for="CategorieServiceId" class="control-label">Catégorie</label>
+                            <select asp-for="CategorieServiceId" class="form-control">
+                                @foreach (var categorie in ViewBag.Categories)
+                                {
+                                    <option value="@categorie.Id">@categorie.Nom</option>
+                                }
+                            </select>
+                            <span asp-validation-for="CategorieServiceId" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="form-check mb-3">
+                            <input asp-for="EstPopulaire" class="form-check-input" />
+                            <label asp-for="EstPopulaire" class="form-check-label">Service populaire</label>
+                            <span asp-validation-for="EstPopulaire" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="form-group d-flex justify-content-between mt-4">
+                            <div>
+                                <input type="submit" value="Enregistrer" class="btn btn-primary" />
+                                <a asp-action="Index" class="btn btn-outline-secondary">Annuler</a>
+                            </div>
+                            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Supprimer</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Aide</h5>
+                </div>
+                <div class="card-body">
+                    <p>Vous pouvez modifier les informations du service sur cette page.</p>
+                    <ul>
+                        <li>Le <strong>nom</strong> et la <strong>description</strong> sont obligatoires</li>
+                        <li>Entrez une <strong>URL d'image</strong> commençant par /images/services/</li>
+                        <li>Sélectionnez la <strong>catégorie</strong> appropriée</li>
+                        <li>Cochez <strong>Service populaire</strong> pour le mettre en avant</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

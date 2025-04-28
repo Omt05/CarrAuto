@@ -4,6 +4,7 @@ using CarrAuto.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarrAuto.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250428021605_UpdateProductImagePaths")]
+    partial class UpdateProductImagePaths
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -363,7 +366,7 @@ namespace CarrAuto.Migrations
                             CategorieServiceId = 2,
                             Description = "Vidange d'huile avec remplacement du filtre à huile",
                             EstPopulaire = false,
-                            ImageUrl = "/images/services/oil-change.jpeg",
+                            ImageUrl = "/images/services/oil-change.jpg",
                             Nom = "Vidange complète",
                             PrixEstimatif = 69.99m
                         },
@@ -373,7 +376,7 @@ namespace CarrAuto.Migrations
                             CategorieServiceId = 4,
                             Description = "Montage, équilibrage et permutation de vos pneus",
                             EstPopulaire = false,
-                            ImageUrl = "/images/services/tire-mounting.jpeg",
+                            ImageUrl = "/images/services/tire-mounting.jpg",
                             Nom = "Montage et équilibrage de pneus",
                             PrixEstimatif = 49.99m
                         },
@@ -393,7 +396,7 @@ namespace CarrAuto.Migrations
                             CategorieServiceId = 5,
                             Description = "Contrôle et recharge du circuit de climatisation",
                             EstPopulaire = false,
-                            ImageUrl = "/images/services/ac-service.jpeg",
+                            ImageUrl = "/images/services/ac-service.jpg",
                             Nom = "Recharge de climatisation",
                             PrixEstimatif = 79.99m
                         });
@@ -475,7 +478,7 @@ namespace CarrAuto.Migrations
                             DateMiseEnVente = new DateTime(2023, 1, 15, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Toyota Corolla en excellent état, entretien régulier, un seul propriétaire",
                             EstDisponible = true,
-                            ImageUrl = "/images/vehicles/vehicle1.jpeg",
+                            ImageUrl = "/images/vehicles/toyota-corolla.jpg",
                             Kilometrage = 65000,
                             Marque = "Toyota",
                             Modele = "Corolla",
@@ -491,7 +494,7 @@ namespace CarrAuto.Migrations
                             DateMiseEnVente = new DateTime(2023, 3, 10, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Honda Civic en parfait état, jamais accidentée, tout l'historique d'entretien disponible",
                             EstDisponible = true,
-                            ImageUrl = "/images/vehicles/vehicle2.jpeg",
+                            ImageUrl = "/images/vehicles/honda-civic.jpg",
                             Kilometrage = 48000,
                             Marque = "Honda",
                             Modele = "Civic",
@@ -507,7 +510,7 @@ namespace CarrAuto.Migrations
                             DateMiseEnVente = new DateTime(2023, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "SUV Ford Escape idéal pour la famille, bien entretenu, pneus neufs",
                             EstDisponible = true,
-                            ImageUrl = "/images/vehicles/vehicle3.jpeg",
+                            ImageUrl = "/images/vehicles/ford-escape.jpg",
                             Kilometrage = 78000,
                             Marque = "Ford",
                             Modele = "Escape",

@@ -1,0 +1,153 @@
+@model CarrAuto.Models.Service
+
+@{
+    ViewData["Title"] = $"Détails du service {Model.Nom} - Garage Carr'auto";
+}
+
+@section Styles {
+    <style>
+        .service-details {
+            padding: 40px 0;
+        }
+        .service-image {
+            border-radius: 10px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            max-height: 400px;
+            object-fit: cover;
+            width: 100%;
+        }
+        .service-info {
+            padding: 20px;
+        }
+        .service-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        .badge-popular {
+            background-color: #ff6b6b;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+        }
+        .details-section {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .category-badge {
+            display: inline-block;
+            background-color: #17a2b8;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+    </style>
+}
+
+<div class="container service-details">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action("Index", "Services")">Services</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Nom</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-lg-6">
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="@Model.ImageUrl" alt="@Model.Nom" class="service-image">
+            }
+            else
+            {
+                <img src="/images/services/default-service.jpg" alt="@Model.Nom" class="service-image">
+            }
+        </div>
+        
+        <div class="col-lg-6 service-info">
+            <h1>
+                @Model.Nom
+                @if (Model.EstPopulaire)
+                {
+                    <span class="badge badge-popular">Populaire</span>
+                }
+            </h1>
+
+            @if (Model.CategorieService != null)
+            {
+                <div class="category-badge">
+                    @Model.CategorieService.Nom
+                </div>
+            }
+
+            <div class="service-price">
+                @(Model.PrixEstimatif.HasValue ? $"{Model.PrixEstimatif:C2}" : "Prix sur demande")
+            </div>
+
+            <div class="description mb-4">
+                <p>@Model.Description</p>
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.DetailsSupplementaires))
+            {
+                <div class="details-section">
+                    <h4>Détails supplémentaires</h4>
+                    <p>@Model.DetailsSupplementaires</p>
+                </div>
+            }
+
+            <div class="mt-4">
+                <a href="@Url.Action("Create", "Devis", new { serviceId = Model.Id })" class="btn btn-lg btn-primary">Demander un devis</a>
+                <a href="@Url.Action("Index", "Services")" class="btn btn-lg btn-outline-secondary ml-3">Retour aux services</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3>À propos de ce service</h3>
+                </div>
+                <div class="card-body">
+                    <p>Chez Garage Carr'auto, nous offrons un service de qualité réalisé par des professionnels qualifiés. Nos techniciens spécialisés garantissent un travail soigné pour assurer la sécurité et la performance de votre véhicule.</p>
+                    
+                    <div class="d-flex justify-content-between flex-wrap mt-4">
+                        <div class="service-feature">
+                            <i class="bi bi-shield-check"></i>
+                            <h5>Garantie du travail</h5>
+                            <p>Tous nos services sont garantis</p>
+                        </div>
+                        <div class="service-feature">
+                            <i class="bi bi-clock"></i>
+                            <h5>Rapidité</h5>
+                            <p>Service rapide et efficace</p>
+                        </div>
+                        <div class="service-feature">
+                            <i class="bi bi-cash"></i>
+                            <h5>Prix juste</h5>
+                            <p>Tarifs transparents et compétitifs</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-4 mb-4">
+    <div class="d-flex justify-content-between">
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-primary">Modifier</a>
+            <a asp-action="Index" class="btn btn-sm btn-outline-secondary">Retour à la liste</a>
+        </div>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-danger">Supprimer</a>
+    </div>
+</div>
