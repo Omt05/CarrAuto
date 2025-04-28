@@ -1,0 +1,226 @@
+@model CarrAuto.Models.DemandeDevis
+
+@{
+    ViewData["Title"] = "Demande de Devis - Garage Carr'auto";
+}
+
+<!-- Hero Section -->
+<section class="page-hero" style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/images/devis-hero.jpg') no-repeat center center/cover;">
+    <div class="container">
+        <div class="hero-content text-center">
+            <h1>Demande de Devis</h1>
+            <p class="lead">Obtenez rapidement un devis personnalisé pour vos réparations ou entretien automobile</p>
+        </div>
+    </div>
+</section>
+
+<!-- Quote Form Section -->
+<section class="quote-section section-padding">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow-sm">
+                    <div class="card-body p-4 p-md-5">
+                        <h2 class="card-title text-center mb-4">Formulaire de demande de devis</h2>
+                        <p class="text-center mb-4">Remplissez ce formulaire pour obtenir un devis personnalisé pour votre véhicule. Notre équipe vous contactera dans les plus brefs délais.</p>
+                        
+                        <form asp-action="Create" method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            
+                            <div class="row">
+                                <h4 class="mb-3">Vos informations personnelles</h4>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="Nom" class="form-label">Nom*</label>
+                                    <input asp-for="Nom" class="form-control" required />
+                                    <span asp-validation-for="Nom" class="text-danger"></span>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="Prenom" class="form-label">Prénom*</label>
+                                    <input asp-for="Prenom" class="form-control" required />
+                                    <span asp-validation-for="Prenom" class="text-danger"></span>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="Email" class="form-label">Email*</label>
+                                    <input asp-for="Email" class="form-control" type="email" required />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="Telephone" class="form-label">Téléphone</label>
+                                    <input asp-for="Telephone" class="form-control" type="tel" />
+                                    <span asp-validation-for="Telephone" class="text-danger"></span>
+                                </div>
+                            </div>
+                            
+                            <hr class="my-4">
+                            
+                            <div class="row">
+                                <h4 class="mb-3">Informations sur votre véhicule</h4>
+                                
+                                <div class="col-md-4 mb-3">
+                                    <label asp-for="MarqueVehicule" class="form-label">Marque*</label>
+                                    <input asp-for="MarqueVehicule" class="form-control" required />
+                                    <span asp-validation-for="MarqueVehicule" class="text-danger"></span>
+                                </div>
+                                
+                                <div class="col-md-4 mb-3">
+                                    <label asp-for="ModeleVehicule" class="form-label">Modèle*</label>
+                                    <input asp-for="ModeleVehicule" class="form-control" required />
+                                    <span asp-validation-for="ModeleVehicule" class="text-danger"></span>
+                                </div>
+                                
+                                <div class="col-md-4 mb-3">
+                                    <label asp-for="AnneeVehicule" class="form-label">Année*</label>
+                                    <select asp-for="AnneeVehicule" class="form-select" required>
+                                        <option value="">Sélectionnez...</option>
+                                        @for (int year = DateTime.Now.Year; year >= 1980; year--)
+                                        {
+                                            <option value="@year">@year</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="AnneeVehicule" class="text-danger"></span>
+                                </div>
+                            </div>
+                            
+                            <hr class="my-4">
+                            
+                            <div class="row">
+                                <h4 class="mb-3">Services souhaités</h4>
+                                
+                                <div class="col-12 mb-3">
+                                    <div class="services-checkboxes">
+                                        @if (ViewBag.Services != null)
+                                        {
+                                            foreach (var service in ViewBag.Services)
+                                            {
+                                                <div class="form-check mb-2">
+                                                    <input type="checkbox" class="form-check-input" id="service-@service.Id" name="ServicesSelectionnes" value="@service.Id">
+                                                    <label class="form-check-label" for="service-@service.Id">@service.Nom @(service.PrixEstimatif > 0 ? $"(à partir de {service.PrixEstimatif:C})" : "")</label>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12 mb-3">
+                                    <label asp-for="DescriptionTravaux" class="form-label">Description détaillée des travaux souhaités*</label>
+                                    <textarea asp-for="DescriptionTravaux" class="form-control" rows="5" placeholder="Veuillez décrire les travaux que vous souhaitez effectuer ou les problèmes que rencontre votre véhicule..." required></textarea>
+                                    <span asp-validation-for="DescriptionTravaux" class="text-danger"></span>
+                                </div>
+                            </div>
+                            
+                            <hr class="my-4">
+                            
+                            <div class="form-check mb-4">
+                                <input type="checkbox" class="form-check-input" id="consent" required>
+                                <label class="form-check-label" for="consent">J'accepte que mes informations soient traitées pour traiter ma demande de devis</label>
+                            </div>
+                            
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">Envoyer ma demande de devis</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us Section -->
+<section class="why-us-section section-padding bg-light">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">Pourquoi choisir Carr'auto ?</h2>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card text-center">
+                    <div class="feature-icon mb-3">
+                        <i class="bi bi-tools fs-1 text-primary"></i>
+                    </div>
+                    <h3>Expertise technique</h3>
+                    <p>Notre équipe de mécaniciens qualifiés possède une solide expérience et suit régulièrement des formations pour rester à jour avec les dernières technologies automobiles.</p>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="feature-card text-center">
+                    <div class="feature-icon mb-3">
+                        <i class="bi bi-currency-dollar fs-1 text-primary"></i>
+                    </div>
+                    <h3>Tarifs transparents</h3>
+                    <p>Nous vous fournissons des devis clairs et détaillés sans mauvaises surprises. Notre politique de prix est transparente et compétitive.</p>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="feature-card text-center">
+                    <div class="feature-icon mb-3">
+                        <i class="bi bi-clock-history fs-1 text-primary"></i>
+                    </div>
+                    <h3>Rapidité d'intervention</h3>
+                    <p>Nous comprenons l'importance de votre temps. C'est pourquoi nous nous engageons à intervenir rapidement et à respecter les délais annoncés.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        // Calculateur de devis dynamique (à implémenter dans une future version)
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkboxes = document.querySelectorAll('input[name="ServicesSelectionnes"]');
+            
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateEstimate);
+            });
+            
+            function updateEstimate() {
+                // Cette fonction pourrait être développée pour calculer un montant estimatif
+                // en fonction des services sélectionnés
+                console.log('Estimation mise à jour');
+            }
+        });
+    </script>
+}
+
+@section Styles {
+    <style>
+        /* Quote form specific styles */
+        .page-hero {
+            padding: 100px 0;
+            color: white;
+        }
+        
+        .page-hero h1 {
+            color: white;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            height: 100%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .services-checkboxes {
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: 4px;
+        }
+    </style>
+}

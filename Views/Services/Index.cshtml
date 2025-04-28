@@ -1,0 +1,335 @@
+@model IEnumerable<CarrAuto.Models.Service>
+
+@{
+    ViewData["Title"] = "Nos Services - Garage Carr'auto";
+    var categorieActuelle = ViewBag.CategorieActuelle as CarrAuto.Models.CategorieService;
+    var categories = ViewBag.Categories as IEnumerable<CarrAuto.Models.CategorieService>;
+}
+
+<!-- Hero Section -->
+<section class="page-hero" style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/images/services-hero.jpg') no-repeat center center/cover;">
+    <div class="container">
+        <div class="hero-content text-center">
+            <h1>Nos Services Automobiles</h1>
+            <p class="lead">Entretien, réparation et diagnostic par des professionnels qualifiés</p>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="services-section section-padding">
+    <div class="container">
+        <div class="row">
+            <!-- Categories Sidebar -->
+            <div class="col-lg-3 mb-4 mb-lg-0">
+                <div class="categories-sidebar sticky-lg-top" style="top: 2rem;">
+                    <h2 class="sidebar-title">Catégories de services</h2>
+                    <ul class="categories-list">
+                        <li class="category-item @(categorieActuelle == null ? "active" : "")">
+                            <a asp-action="Index" asp-route-id="">Tous les services</a>
+                        </li>
+                        @if (categories != null)
+                        {
+                            foreach (var categorie in categories)
+                            {
+                                <li class="category-item @(categorieActuelle?.Id == categorie.Id ? "active" : "")">
+                                    <a asp-action="Index" asp-route-id="@categorie.Id">@categorie.Nom</a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                    
+                    <div class="sidebar-cta mt-4">
+                        <div class="card bg-primary text-white">
+                            <div class="card-body text-center p-4">
+                                <h3 class="h5 mb-3">Besoin d'un devis ?</h3>
+                                <p class="mb-3">Obtenez un devis gratuit pour l'entretien ou la réparation de votre véhicule</p>
+                                <a asp-controller="Devis" asp-action="Create" class="btn btn-light">Demander un devis</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Services List -->
+            <div class="col-lg-9">
+                <div class="services-header mb-4">
+                    <h2>
+                        @if (categorieActuelle != null)
+                        {
+                            @categorieActuelle.Nom
+                        }
+                        else
+                        {
+                            <span>Tous les services</span>
+                        }
+                    </h2>
+                    @if (categorieActuelle != null && !string.IsNullOrEmpty(categorieActuelle.Description))
+                    {
+                        <p class="category-description lead">@categorieActuelle.Description</p>
+                    }
+                </div>
+                
+                @if (Model.Any())
+                {
+                    <div class="accordion services-accordion" id="servicesAccordion">
+                        @foreach (var service in Model)
+                        {
+                            <div class="accordion-item service-item mb-3">
+                                <h2 class="accordion-header" id="heading-@service.Id">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@service.Id" aria-expanded="false" aria-controls="collapse-@service.Id">
+                                        <div class="d-flex justify-content-between align-items-center w-100 pe-3">
+                                            <span class="service-title">@service.Nom</span>
+                                            @if (service.PrixEstimatif.HasValue)
+                                            {
+                                                <span class="service-price badge bg-primary">À partir de @service.PrixEstimatif.Value.ToString("C0")</span>
+                                            }
+                                        </div>
+                                    </button>
+                                </h2>
+                                <div id="collapse-@service.Id" class="accordion-collapse collapse" aria-labelledby="heading-@service.Id" data-bs-parent="#servicesAccordion">
+                                    <div class="accordion-body">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <p>@service.Description</p>
+                                                
+                                                @if (!string.IsNullOrEmpty(service.DetailsSupplementaires))
+                                                {
+                                                    <h4 class="h6 mt-3">Ce que comprend le service :</h4>
+                                                    <p>@service.DetailsSupplementaires</p>
+                                                }
+                                                
+                                                <div class="service-tags mt-3">
+                                                    <span class="category-tag">@service.CategorieService?.Nom</span>
+                                                    @if (service.EstPopulaire)
+                                                    {
+                                                        <span class="popular-tag ms-2">Populaire</span>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                                                <a asp-controller="Devis" asp-action="Create" class="btn btn-primary">Demander un devis</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info" role="alert">
+                        <h4 class="alert-heading">Aucun service trouvé</h4>
+                        <p>Il n'y a actuellement aucun service disponible dans cette catégorie. Veuillez consulter nos autres catégories de services ou nous contacter directement.</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us Section -->
+<section class="why-us-section section-padding bg-light">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">Pourquoi choisir Carr'auto ?</h2>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card h-100 text-center p-4">
+                    <div class="feature-icon mb-3">
+                        <i class="bi bi-trophy fs-1 text-primary"></i>
+                    </div>
+                    <h3 class="h5">Expertise reconnue</h3>
+                    <p>Plus de 30 ans d'expérience et une équipe de mécaniciens qualifiés pour assurer un service de qualité.</p>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="feature-card h-100 text-center p-4">
+                    <div class="feature-icon mb-3">
+                        <i class="bi bi-clock-history fs-1 text-primary"></i>
+                    </div>
+                    <h3 class="h5">Service rapide</h3>
+                    <p>Nous respectons les délais annoncés et vous tenons informés de l'avancement des travaux.</p>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="feature-card h-100 text-center p-4">
+                    <div class="feature-icon mb-3">
+                        <i class="bi bi-patch-check fs-1 text-primary"></i>
+                    </div>
+                    <h3 class="h5">Garantie sur nos services</h3>
+                    <p>Tous nos travaux sont garantis pour votre tranquillité d'esprit et votre sécurité.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials-section section-padding">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">Ce que disent nos clients</h2>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="testimonial-card p-4">
+                            <div class="testimonial-rating mb-3">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <p class="testimonial-content">"Service impeccable pour l'entretien de ma voiture. L'équipe est professionnelle, transparente sur les coûts et respecte les délais. Je recommande vivement !"</p>
+                            <div class="testimonial-author">
+                                <h4 class="h6 mb-0">Marie Dupont</h4>
+                                <small>Cliente depuis 2018</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="testimonial-card p-4">
+                            <div class="testimonial-rating mb-3">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                            </div>
+                            <p class="testimonial-content">"J'ai fait réaliser le montage de mes pneus et une révision complète. Travail soigné, prix raisonnable et personnel aimable. Je reviendrai sans hésiter."</p>
+                            <div class="testimonial-author">
+                                <h4 class="h6 mb-0">Thomas Leroy</h4>
+                                <small>Client depuis 2020</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Styles {
+    <style>
+        /* Services page specific styles */
+        .page-hero {
+            padding: 100px 0;
+            color: white;
+        }
+        
+        .page-hero h1 {
+            color: white;
+        }
+        
+        .categories-sidebar {
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .sidebar-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .categories-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .category-item {
+            margin-bottom: 10px;
+        }
+        
+        .category-item a {
+            display: block;
+            padding: 8px 15px;
+            color: var(--text-color);
+            border-radius: 4px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .category-item a:hover, .category-item.active a {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .service-item {
+            border-radius: 8px;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .accordion-button:not(.collapsed) {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .accordion-button:focus {
+            box-shadow: none;
+            border-color: rgba(0,0,0,.125);
+        }
+        
+        .service-price {
+            font-weight: 500;
+            padding: 6px 12px;
+        }
+        
+        .category-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            background-color: var(--light-gray);
+            color: var(--text-color);
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        
+        .popular-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .testimonial-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            height: 100%;
+        }
+        
+        .testimonial-rating {
+            color: #ffc107;
+        }
+        
+        .testimonial-content {
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+    </style>
+}

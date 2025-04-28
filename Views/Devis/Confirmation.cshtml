@@ -1,0 +1,64 @@
+@model CarrAuto.Models.DemandeDevis
+
+@{
+    ViewData["Title"] = "Confirmation de demande de devis - Garage Carr'auto";
+}
+
+<section class="confirmation-section section-padding">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow confirmation-card">
+                    <div class="card-body p-5 text-center">
+                        <div class="confirmation-icon mb-4">
+                            <i class="bi bi-check-circle-fill text-success"></i>
+                        </div>
+                        <h1 class="card-title mb-4">Demande de devis envoyée avec succès !</h1>
+                        <p class="lead mb-4">Nous avons bien reçu votre demande de devis pour votre véhicule @Model.MarqueVehicule @Model.ModeleVehicule (@Model.AnneeVehicule).</p>
+                        
+                        <div class="confirmation-details mb-4">
+                            <p>Numéro de référence : <strong>DEV-@Model.Id.ToString("D4")</strong></p>
+                            <p>Date de la demande : <strong>@Model.DateDemande.ToString("dd/MM/yyyy à HH:mm")</strong></p>
+                        </div>
+                        
+                        <div class="alert alert-info" role="alert">
+                            <h5 class="alert-heading">Et maintenant ?</h5>
+                            <p>Notre équipe va étudier votre demande et vous contactera dans un délai de 24 à 48 heures ouvrables pour vous fournir un devis personnalisé.</p>
+                            <p class="mb-0">Un email de confirmation a été envoyé à <strong>@Model.Email</strong>.</p>
+                        </div>
+                        
+                        <div class="mt-5">
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary me-3">Retour à l'accueil</a>
+                            <a asp-controller="Services" asp-action="Index" class="btn btn-primary">Découvrir nos services</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Styles {
+    <style>
+        .confirmation-section {
+            padding: 80px 0;
+        }
+        
+        .confirmation-card {
+            border: none;
+            border-radius: 10px;
+        }
+        
+        .confirmation-icon {
+            font-size: 5rem;
+            color: #28a745;
+        }
+        
+        .confirmation-details {
+            background-color: var(--light-color);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: left;
+        }
+    </style>
+}

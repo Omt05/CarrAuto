@@ -1,0 +1,248 @@
+@model IEnumerable<CarrAuto.Models.VehiculeOccasion>
+
+@{
+    ViewData["Title"] = "Véhicules d'occasion - Garage Carr'auto";
+}
+
+<!-- Hero Section -->
+<section class="page-hero" style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/images/vehicles-hero.jpg') no-repeat center center/cover;">
+    <div class="container">
+        <div class="hero-content text-center">
+            <h1>Nos Véhicules d'Occasion</h1>
+            <p class="lead">Découvrez notre sélection de véhicules d'occasion garantis et révisés</p>
+        </div>
+    </div>
+</section>
+
+<!-- Vehicles Search Section -->
+<section class="search-section section-padding bg-light">
+    <div class="container">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h2 class="card-title h4 mb-4">Rechercher un véhicule</h2>
+                
+                <form asp-action="ResultatsRecherche" method="post" class="row g-3">
+                    <div class="col-md-3 mb-3">
+                        <label for="marque" class="form-label">Marque</label>
+                        <input type="text" id="marque" name="marque" class="form-control" placeholder="Ex: Toyota">
+                    </div>
+                    
+                    <div class="col-md-3 mb-3">
+                        <label for="modele" class="form-label">Modèle</label>
+                        <input type="text" id="modele" name="modele" class="form-control" placeholder="Ex: Corolla">
+                    </div>
+                    
+                    <div class="col-md-2 mb-3">
+                        <label for="anneeMin" class="form-label">Année min</label>
+                        <select id="anneeMin" name="anneeMin" class="form-select">
+                            <option value="">Tous</option>
+                            @for (int year = DateTime.Now.Year; year >= 2000; year-=5)
+                            {
+                                <option value="@year">@year</option>
+                            }
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-2 mb-3">
+                        <label for="anneeMax" class="form-label">Année max</label>
+                        <select id="anneeMax" name="anneeMax" class="form-select">
+                            <option value="">Tous</option>
+                            @for (int year = DateTime.Now.Year; year >= 2000; year-=5)
+                            {
+                                <option value="@year">@year</option>
+                            }
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-2 mb-3">
+                        <label for="prixMax" class="form-label">Prix max</label>
+                        <select id="prixMax" name="prixMax" class="form-select">
+                            <option value="">Tous</option>
+                            <option value="5000">5 000 $</option>
+                            <option value="10000">10 000 $</option>
+                            <option value="15000">15 000 $</option>
+                            <option value="20000">20 000 $</option>
+                            <option value="30000">30 000 $</option>
+                            <option value="50000">50 000 $</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Rechercher</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Vehicles Listing Section -->
+<section class="vehicles-section section-padding">
+    <div class="container">
+        <h2 class="section-title mb-4">Véhicules disponibles (@Model.Count())</h2>
+        
+        @if (Model.Any())
+        {
+            <div class="row">
+                @foreach (var vehicule in Model)
+                {
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card vehicle-card h-100">
+                            <!-- Vehicle Image -->
+                            <div class="vehicle-img-container">
+                                @if (!string.IsNullOrEmpty(vehicule.ImageUrl))
+                                {
+                                    <img src="@vehicule.ImageUrl" class="card-img-top" alt="@vehicule.Marque @vehicule.Modele">
+                                }
+                                else
+                                {
+                                    <img src="/images/car-default.jpg" class="card-img-top" alt="@vehicule.Marque @vehicule.Modele">
+                                }
+                                <div class="vehicle-price-tag">@vehicule.Prix.ToString("C0")</div>
+                            </div>
+                            
+                            <!-- Vehicle Info -->
+                            <div class="card-body">
+                                <h3 class="card-title h5">@vehicule.Marque @vehicule.Modele</h3>
+                                <div class="vehicle-specs mb-3">
+                                    <div class="row">
+                                        <div class="col-6 mb-2">
+                                            <div class="spec-item">
+                                                <i class="bi bi-calendar3"></i>
+                                                <span>@vehicule.Annee</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 mb-2">
+                                            <div class="spec-item">
+                                                <i class="bi bi-speedometer2"></i>
+                                                <span>@vehicule.Kilometrage km</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 mb-2">
+                                            <div class="spec-item">
+                                                <i class="bi bi-fuel-pump"></i>
+                                                <span>@(string.IsNullOrEmpty(vehicule.TypeCarburant) ? "Non spécifié" : vehicule.TypeCarburant)</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 mb-2">
+                                            <div class="spec-item">
+                                                <i class="bi bi-gear-wide"></i>
+                                                <span>@(string.IsNullOrEmpty(vehicule.Transmission) ? "Non spécifié" : vehicule.Transmission)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="card-text text-truncate">@vehicule.Description</p>
+                            </div>
+                            
+                            <div class="card-footer bg-white border-top-0">
+                                <div class="d-grid gap-2">
+                                    <a asp-action="Details" asp-route-id="@vehicule.Id" class="btn btn-primary">Voir les détails</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info" role="alert">
+                <h4 class="alert-heading">Aucun véhicule disponible actuellement</h4>
+                <p>Nous mettons régulièrement à jour notre inventaire. N'hésitez pas à revenir consulter cette page ultérieurement ou à nous contacter directement pour connaître nos prochaines arrivées.</p>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- Why Choose Our Used Cars Section -->
+<section class="why-us-section section-padding bg-light">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">Pourquoi choisir nos véhicules d'occasion ?</h2>
+        
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 guarantee-card text-center p-4">
+                    <div class="guarantee-icon mb-3">
+                        <i class="bi bi-shield-check text-primary fs-1"></i>
+                    </div>
+                    <h3 class="h5">Garantie de 6 mois</h3>
+                    <p>Tous nos véhicules d'occasion sont garantis 6 mois minimum, pièces et main d'œuvre.</p>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 guarantee-card text-center p-4">
+                    <div class="guarantee-icon mb-3">
+                        <i class="bi bi-clipboard-check text-primary fs-1"></i>
+                    </div>
+                    <h3 class="h5">Contrôle technique</h3>
+                    <p>Tous nos véhicules passent un contrôle technique complet avant la mise en vente.</p>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 guarantee-card text-center p-4">
+                    <div class="guarantee-icon mb-3">
+                        <i class="bi bi-wrench text-primary fs-1"></i>
+                    </div>
+                    <h3 class="h5">Révision complète</h3>
+                    <p>Chaque véhicule bénéficie d'une révision complète dans notre atelier avant la vente.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Styles {
+    <style>
+        /* Vehicle listing specific styles */
+        .vehicle-img-container {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .vehicle-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .vehicle-price-tag {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 5px 15px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            border-top-left-radius: 8px;
+        }
+        
+        .vehicle-specs {
+            font-size: 0.9rem;
+        }
+        
+        .spec-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .spec-item i {
+            color: var(--secondary-color);
+            margin-right: 8px;
+        }
+        
+        .guarantee-card {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+            border: none;
+        }
+        
+        .guarantee-card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+}

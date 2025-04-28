@@ -1,0 +1,119 @@
+@{
+    ViewData["Title"] = "Recherche de véhicules - Garage Carr'auto";
+}
+
+@section Styles {
+    <style>
+        .search-form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        .search-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-buttons {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .search-helper {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+    </style>
+}
+
+<!-- Hero Section -->
+<section class="page-hero" style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/images/vehicles-hero.jpg') no-repeat center center/cover;">
+    <div class="container">
+        <div class="hero-content text-center">
+            <h1>Recherche avancée</h1>
+            <p class="lead">Trouvez le véhicule parfait pour vos besoins</p>
+        </div>
+    </div>
+</section>
+
+<!-- Search Form Section -->
+<section class="search-section section-padding">
+    <div class="container">
+        <div class="search-form-container">
+            <h2 class="search-title">Critères de recherche</h2>
+            
+            <form asp-action="ResultatsRecherche" method="post">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="marque" class="form-label">Marque</label>
+                            <input type="text" id="marque" name="marque" class="form-control" placeholder="Ex: Toyota, Renault, Peugeot...">
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="modele" class="form-label">Modèle</label>
+                            <input type="text" id="modele" name="modele" class="form-control" placeholder="Ex: Corolla, Clio, 308...">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="anneeMin" class="form-label">Année minimum</label>
+                            <select id="anneeMin" name="anneeMin" class="form-select">
+                                <option value="">Tous</option>
+                                @for (int year = DateTime.Now.Year; year >= 2000; year--)
+                                {
+                                    <option value="@year">@year</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="anneeMax" class="form-label">Année maximum</label>
+                            <select id="anneeMax" name="anneeMax" class="form-select">
+                                <option value="">Tous</option>
+                                @for (int year = DateTime.Now.Year; year >= 2000; year--)
+                                {
+                                    <option value="@year">@year</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="prixMax" class="form-label">Prix maximum (€)</label>
+                            <input type="number" id="prixMax" name="prixMax" class="form-control" placeholder="Ex: 15000">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-primary btn-lg">Rechercher</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary btn-lg">Annuler</a>
+                </div>
+            </form>
+        </div>
+        
+        <div class="search-helper">
+            <h3>Besoin d'aide pour trouver votre véhicule ?</h3>
+            <p>Notre équipe est disponible pour vous conseiller et vous aider à trouver le véhicule qui correspond parfaitement à vos besoins.</p>
+            <a asp-controller="Home" asp-action="Contact" class="btn btn-primary mt-2">Contactez-nous</a>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,202 @@
+@model IEnumerable<CarrAuto.Models.VehiculeOccasion>
+
+@{
+    ViewData["Title"] = "Résultats de recherche - Véhicules d'occasion - Garage Carr'auto";
+}
+
+@section Styles {
+    <style>
+        .search-criteria {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary-color);
+        }
+        .search-criteria strong {
+            color: var(--primary-color);
+        }
+        .no-results {
+            text-align: center;
+            padding: 50px 0;
+        }
+        .no-results i {
+            font-size: 4rem;
+            color: #ccc;
+            margin-bottom: 20px;
+            display: block;
+        }
+        .filter-tag {
+            display: inline-block;
+            background-color: var(--light-gray);
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+    </style>
+}
+
+<!-- Hero Section -->
+<section class="page-hero" style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/images/vehicles-hero.jpg') no-repeat center center/cover;">
+    <div class="container">
+        <div class="hero-content text-center">
+            <h1>Résultats de recherche</h1>
+            <p class="lead">Véhicules d'occasion correspondant à vos critères</p>
+        </div>
+    </div>
+</section>
+
+<!-- Search Results Section -->
+<section class="vehicles-section section-padding">
+    <div class="container">
+        <!-- Search Criteria Summary -->
+        <div class="search-criteria">
+            <h2 class="h4 mb-3">Critères de recherche</h2>
+            <div class="row">
+                @if (!string.IsNullOrEmpty(Context.Request.Form["marque"]))
+                {
+                    <div class="col-auto">
+                        <div class="filter-tag">
+                            <strong>Marque:</strong> @Context.Request.Form["marque"]
+                        </div>
+                    </div>
+                }
+                
+                @if (!string.IsNullOrEmpty(Context.Request.Form["modele"]))
+                {
+                    <div class="col-auto">
+                        <div class="filter-tag">
+                            <strong>Modèle:</strong> @Context.Request.Form["modele"]
+                        </div>
+                    </div>
+                }
+                
+                @if (!string.IsNullOrEmpty(Context.Request.Form["anneeMin"]))
+                {
+                    <div class="col-auto">
+                        <div class="filter-tag">
+                            <strong>Année min:</strong> @Context.Request.Form["anneeMin"]
+                        </div>
+                    </div>
+                }
+                
+                @if (!string.IsNullOrEmpty(Context.Request.Form["anneeMax"]))
+                {
+                    <div class="col-auto">
+                        <div class="filter-tag">
+                            <strong>Année max:</strong> @Context.Request.Form["anneeMax"]
+                        </div>
+                    </div>
+                }
+                
+                @if (!string.IsNullOrEmpty(Context.Request.Form["prixMax"]))
+                {
+                    <div class="col-auto">
+                        <div class="filter-tag">
+                            <strong>Prix max:</strong> @decimal.Parse(Context.Request.Form["prixMax"]).ToString("C0")
+                        </div>
+                    </div>
+                }
+            </div>
+            
+            <div class="mt-3">
+                <a asp-action="Index" class="btn btn-outline-secondary btn-sm">Nouvelle recherche</a>
+            </div>
+        </div>
+
+        <!-- Results Count -->
+        <h2 class="section-title mb-4">Véhicules trouvés (@Model.Count())</h2>
+        
+        <!-- Results List -->
+        @if (Model.Any())
+        {
+            <div class="row">
+                @foreach (var vehicule in Model)
+                {
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card vehicle-card h-100">
+                            <!-- Vehicle Image -->
+                            <div class="vehicle-img-container">
+                                @if (!string.IsNullOrEmpty(vehicule.ImageUrl))
+                                {
+                                    <img src="@vehicule.ImageUrl" class="card-img-top" alt="@vehicule.Marque @vehicule.Modele">
+                                }
+                                else
+                                {
+                                    <img src="/images/car-default.jpg" class="card-img-top" alt="@vehicule.Marque @vehicule.Modele">
+                                }
+                                <div class="vehicle-price-tag">@vehicule.Prix.ToString("C0")</div>
+                            </div>
+                            
+                            <!-- Vehicle Info -->
+                            <div class="card-body">
+                                <h3 class="card-title h5">@vehicule.Marque @vehicule.Modele</h3>
+                                <div class="vehicle-specs mb-3">
+                                    <div class="row">
+                                        <div class="col-6 mb-2">
+                                            <div class="spec-item">
+                                                <i class="bi bi-calendar3"></i>
+                                                <span>@vehicule.Annee</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 mb-2">
+                                            <div class="spec-item">
+                                                <i class="bi bi-speedometer2"></i>
+                                                <span>@vehicule.Kilometrage km</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 mb-2">
+                                            <div class="spec-item">
+                                                <i class="bi bi-fuel-pump"></i>
+                                                <span>@(string.IsNullOrEmpty(vehicule.TypeCarburant) ? "Non spécifié" : vehicule.TypeCarburant)</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 mb-2">
+                                            <div class="spec-item">
+                                                <i class="bi bi-gear-wide"></i>
+                                                <span>@(string.IsNullOrEmpty(vehicule.Transmission) ? "Non spécifié" : vehicule.Transmission)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="card-text vehicle-description">@(vehicule.Description != null && vehicule.Description.Length > 100 ? vehicule.Description.Substring(0, 100) + "..." : vehicule.Description)</p>
+                            </div>
+                            
+                            <!-- Vehicle Actions -->
+                            <div class="card-footer bg-white">
+                                <a asp-action="Details" asp-route-id="@vehicule.Id" class="btn btn-primary btn-sm">Voir les détails</a>
+                                <a asp-controller="Devis" asp-action="Create" asp-route-vehiculeId="@vehicule.Id" class="btn btn-outline-secondary btn-sm">Demander un devis</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="no-results">
+                <i class="bi bi-search"></i>
+                <h3>Aucun véhicule ne correspond à vos critères</h3>
+                <p>Essayez de modifier vos critères de recherche pour obtenir plus de résultats</p>
+                <a asp-action="Index" class="btn btn-primary mt-3">Nouvelle recherche</a>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="cta-section section-padding bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mb-4 mb-lg-0">
+                <h2>Vous ne trouvez pas ce que vous cherchez ?</h2>
+                <p class="lead mb-0">Contactez-nous pour nous indiquer vos besoins spécifiques, et nous vous aiderons à trouver le véhicule idéal.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <a asp-controller="Home" asp-action="Contact" class="btn btn-primary btn-lg">Contactez-nous</a>
+            </div>
+        </div>
+    </div>
+</section>

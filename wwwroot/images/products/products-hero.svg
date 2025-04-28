@@ -1,0 +1,19 @@
+<svg width="1200" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="prodGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1c3144;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffab00;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#prodGrad)" />
+  <rect x="300" y="100" width="600" height="200" rx="10" fill="#00000040" />
+  <text x="600" y="180" font-family="Arial" font-size="40" fill="white" text-anchor="middle">Nos Produits</text>
+  <text x="600" y="230" font-family="Arial" font-size="24" fill="white" text-anchor="middle">Pièces et accessoires de qualité</text>
+  
+  <!-- Icônes produits stylisées -->
+  <circle cx="200" cy="200" r="60" fill="#ffffff30" />
+  <rect x="180" y="180" width="40" height="40" rx="5" fill="white" />
+  
+  <circle cx="1000" cy="200" r="60" fill="#ffffff30" />
+  <ellipse cx="1000" cy="200" rx="30" ry="20" fill="white" />
+</svg>

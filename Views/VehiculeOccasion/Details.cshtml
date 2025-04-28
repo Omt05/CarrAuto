@@ -1,0 +1,425 @@
+@model CarrAuto.Models.VehiculeOccasion
+
+@{
+    ViewData["Title"] = $"{Model.Marque} {Model.Modele} ({Model.Annee}) - Véhicules d'occasion";
+}
+
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="bg-light py-2">
+    <div class="container">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Accueil</a></li>
+            <li class="breadcrumb-item"><a asp-controller="VehiculeOccasion" asp-action="Index">Véhicules d'occasion</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Marque @Model.Modele</li>
+        </ol>
+    </div>
+</nav>
+
+<!-- Vehicle Details Section -->
+<section class="vehicle-details-section section-padding">
+    <div class="container">
+        <div class="row">
+            <!-- Vehicle Images -->
+            <div class="col-lg-7 mb-4 mb-lg-0">
+                <div class="vehicle-image-main mb-3">
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <img src="@Model.ImageUrl" class="img-fluid rounded" alt="@Model.Marque @Model.Modele">
+                    }
+                    else
+                    {
+                        <img src="/images/car-default.jpg" class="img-fluid rounded" alt="@Model.Marque @Model.Modele">
+                    }
+                </div>
+                
+                @if (!string.IsNullOrEmpty(Model.ImagesSupplementaires))
+                {
+                    <div class="vehicle-thumbnails">
+                        <div class="row g-2">
+                            @foreach (var imageUrl in Model.ImagesSupplementaires.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                            {
+                                <div class="col-3">
+                                    <img src="@imageUrl.Trim()" class="img-fluid rounded thumbnail" alt="@Model.Marque @Model.Modele - Vue supplémentaire">
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+            
+            <!-- Vehicle Info -->
+            <div class="col-lg-5">
+                <div class="vehicle-info-card">
+                    <div class="vehicle-header mb-4">
+                        <h1 class="vehicle-title mb-2">@Model.Marque @Model.Modele</h1>
+                        <div class="vehicle-subtitle">@Model.Annee - @Model.Kilometrage km</div>
+                        <div class="vehicle-price mt-3">@Model.Prix.ToString("C0")</div>
+                        
+                        @if (!Model.EstDisponible)
+                        {
+                            <div class="alert alert-warning mt-3" role="alert">
+                                <i class="bi bi-exclamation-triangle-fill me-2"></i> Ce véhicule n'est plus disponible à la vente
+                            </div>
+                        }
+                    </div>
+                    
+                    <div class="vehicle-specs mb-4">
+                        <h3 class="specs-title">Caractéristiques</h3>
+                        <div class="specs-grid">
+                            <div class="spec-item">
+                                <div class="spec-label">Marque</div>
+                                <div class="spec-value">@Model.Marque</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">Modèle</div>
+                                <div class="spec-value">@Model.Modele</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">Année</div>
+                                <div class="spec-value">@Model.Annee</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">Kilométrage</div>
+                                <div class="spec-value">@Model.Kilometrage km</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">Carburant</div>
+                                <div class="spec-value">@(string.IsNullOrEmpty(Model.TypeCarburant) ? "Non spécifié" : Model.TypeCarburant)</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">Transmission</div>
+                                <div class="spec-value">@(string.IsNullOrEmpty(Model.Transmission) ? "Non spécifié" : Model.Transmission)</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">Couleur</div>
+                                <div class="spec-value">@(string.IsNullOrEmpty(Model.Couleur) ? "Non spécifié" : Model.Couleur)</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">Puissance</div>
+                                <div class="spec-value">@(Model.Puissance.HasValue ? $"{Model.Puissance} ch" : "Non spécifié")</div>
+                            </div>
+                            @if (!string.IsNullOrEmpty(Model.OptionsPrincipales))
+                            {
+                                <div class="spec-item full-width">
+                                    <div class="spec-label">Options</div>
+                                    <div class="spec-value">@Model.OptionsPrincipales</div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    
+                    <div class="vehicle-description mb-4">
+                        <h3 class="description-title">Description</h3>
+                        <p>@Model.Description</p>
+                    </div>
+                    
+                    <div class="vehicle-actions">
+                        <div class="d-grid gap-2">
+                            <a href="tel:+15551234567" class="btn btn-primary btn-lg">
+                                <i class="bi bi-telephone-fill me-2"></i> Contacter le garage
+                            </a>
+                            <a asp-controller="Devis" asp-action="Create" class="btn btn-outline-primary">
+                                <i class="bi bi-pencil-square me-2"></i> Demander un devis
+                            </a>
+                        </div>
+                        
+                        <div class="vehicle-meta mt-4">
+                            <div class="meta-item">
+                                <i class="bi bi-calendar-event"></i>
+                                <span>Mise en vente : @Model.DateMiseEnVente.ToString("dd/MM/yyyy")</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="bi bi-shield-check"></i>
+                                <span>Garantie de 6 mois incluse</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Additional Info Section -->
+<section class="additional-info-section section-padding bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mb-4 mb-lg-0">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <h3 class="card-title mb-4">Garantie et services inclus</h3>
+                        
+                        <div class="included-services mb-4">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="service-item d-flex align-items-center mb-3">
+                                        <i class="bi bi-shield-check text-primary me-3 fs-4"></i>
+                                        <div>
+                                            <h4 class="h6 mb-1">Garantie 6 mois</h4>
+                                            <p class="mb-0 small">Pièces et main d'œuvre</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="service-item d-flex align-items-center mb-3">
+                                        <i class="bi bi-clipboard-check text-primary me-3 fs-4"></i>
+                                        <div>
+                                            <h4 class="h6 mb-1">Contrôle technique</h4>
+                                            <p class="mb-0 small">À jour et fourni</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="service-item d-flex align-items-center mb-3">
+                                        <i class="bi bi-wrench text-primary me-3 fs-4"></i>
+                                        <div>
+                                            <h4 class="h6 mb-1">Révision complète</h4>
+                                            <p class="mb-0 small">Effectuée avant la vente</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="service-item d-flex align-items-center mb-3">
+                                        <i class="bi bi-file-earmark-text text-primary me-3 fs-4"></i>
+                                        <div>
+                                            <h4 class="h6 mb-1">Historique d'entretien</h4>
+                                            <p class="mb-0 small">Disponible sur demande</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="financing-options">
+                            <h4 class="h5 mb-3">Options de financement</h4>
+                            <p>Nous proposons des solutions de financement adaptées à votre budget et à votre situation.</p>
+                            <ul class="list-unstyled">
+                                <li><i class="bi bi-check2 text-success me-2"></i> Paiement comptant</li>
+                                <li><i class="bi bi-check2 text-success me-2"></i> Financement sur mesure</li>
+                                <li><i class="bi bi-check2 text-success me-2"></i> Possibilité de reprise de votre ancien véhicule</li>
+                            </ul>
+                            <p class="small mt-2">Consultez-nous pour plus d'informations sur nos options de financement.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <h3 class="card-title mb-3">Besoin d'information ?</h3>
+                        <p>Notre équipe est à votre disposition pour répondre à toutes vos questions concernant ce véhicule.</p>
+                        
+                        <div class="contact-info mt-4">
+                            <div class="contact-item d-flex align-items-center mb-3">
+                                <i class="bi bi-telephone-fill text-primary me-3 fs-4"></i>
+                                <div>
+                                    <h4 class="h6 mb-1">Téléphone</h4>
+                                    <p class="mb-0"><a href="tel:+15551234567">+1 (555) 123-4567</a></p>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-item d-flex align-items-center mb-3">
+                                <i class="bi bi-envelope-fill text-primary me-3 fs-4"></i>
+                                <div>
+                                    <h4 class="h6 mb-1">Email</h4>
+                                    <p class="mb-0"><a href="mailto:contact@carrauto.ca">contact@carrauto.ca</a></p>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-item d-flex align-items-center">
+                                <i class="bi bi-geo-alt-fill text-primary me-3 fs-4"></i>
+                                <div>
+                                    <h4 class="h6 mb-1">Adresse</h4>
+                                    <p class="mb-0">123 Rue Principale<br>Sud-Ouest du Canada</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 text-center">
+                            <a asp-controller="Home" asp-action="Contact" class="btn btn-outline-primary w-100">Contactez-nous</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Similar Vehicles Section -->
+@if (ViewBag.VehiculesSimiliaires != null && ViewBag.VehiculesSimiliaires.Count > 0)
+{
+    <section class="similar-vehicles-section section-padding">
+        <div class="container">
+            <h2 class="section-title mb-4">Véhicules similaires</h2>
+            
+            <div class="row">
+                @foreach (var vehicule in ViewBag.VehiculesSimiliaires)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card vehicle-card h-100">
+                            <div class="vehicle-img-container">
+                                @if (!string.IsNullOrEmpty(vehicule.ImageUrl))
+                                {
+                                    <img src="@vehicule.ImageUrl" class="card-img-top" alt="@vehicule.Marque @vehicule.Modele">
+                                }
+                                else
+                                {
+                                    <img src="/images/car-default.jpg" class="card-img-top" alt="@vehicule.Marque @vehicule.Modele">
+                                }
+                                <div class="vehicle-price-tag">@vehicule.Prix.ToString("C0")</div>
+                            </div>
+                            
+                            <div class="card-body">
+                                <h3 class="card-title h5">@vehicule.Marque @vehicule.Modele</h3>
+                                <div class="vehicle-specs mb-3">
+                                    <div class="row">
+                                        <div class="col-6 mb-2">
+                                            <div class="spec-item">
+                                                <i class="bi bi-calendar3"></i>
+                                                <span>@vehicule.Annee</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 mb-2">
+                                            <div class="spec-item">
+                                                <i class="bi bi-speedometer2"></i>
+                                                <span>@vehicule.Kilometrage km</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="card-footer bg-white border-top-0">
+                                <a asp-action="Details" asp-route-id="@vehicule.Id" class="btn btn-outline-primary w-100">Voir le détail</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+}
+
+@section Styles {
+    <style>
+        /* Vehicle details specific styles */
+        .vehicle-info-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            height: 100%;
+        }
+        
+        .vehicle-title {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        
+        .vehicle-subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+        
+        .vehicle-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .specs-title, .description-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .spec-item.full-width {
+            grid-column: span 2;
+        }
+        
+        .spec-label {
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .spec-value {
+            font-size: 1rem;
+        }
+        
+        .vehicle-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .meta-item i {
+            margin-right: 8px;
+        }
+        
+        .vehicle-image-main {
+            height: 400px;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        
+        .vehicle-image-main img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .thumbnail {
+            height: 80px;
+            width: 100%;
+            object-fit: cover;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        
+        .thumbnail:hover {
+            opacity: 0.8;
+        }
+        
+        /* Similar vehicles section styles */
+        .vehicle-img-container {
+            position: relative;
+            height: 180px;
+            overflow: hidden;
+        }
+        
+        .vehicle-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .vehicle-price-tag {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 5px 15px;
+            font-weight: 700;
+            font-size: 1rem;
+            border-top-left-radius: 8px;
+        }
+    </style>
+}

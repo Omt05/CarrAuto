@@ -1,0 +1,27 @@
+# Ignorer les fichiers et dossiers de compilation
+bin/
+obj/
+*.user
+*.suo
+.vs/
+
+# Ignorer les fichiers locaux de développement
+appsettings.Development.json
+*.Development.json
+
+# Ignorer les packages NuGet
+packages/
+
+# Ignorer les fichiers de compilation et de publication
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+msbuild.log
+msbuild.err
+msbuild.wrn

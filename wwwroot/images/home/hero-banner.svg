@@ -1,0 +1,15 @@
+<svg width="1200" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#d92332;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1c3144;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#grad1)" />
+  <rect x="300" y="100" width="600" height="200" rx="10" fill="#00000040" />
+  <text x="600" y="180" font-family="Arial" font-size="40" fill="white" text-anchor="middle">Garage Carr'auto</text>
+  <text x="600" y="230" font-family="Arial" font-size="24" fill="white" text-anchor="middle">Votre garage automobile de confiance</text>
+  <circle cx="200" cy="300" r="40" stroke="white" stroke-width="2" fill="none" />
+  <circle cx="1000" cy="300" r="40" stroke="white" stroke-width="2" fill="none" />
+  <rect x="100" y="340" width="1000" height="10" rx="5" fill="white" />
+</svg>

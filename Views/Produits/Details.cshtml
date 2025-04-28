@@ -1,0 +1,144 @@
+@model CarrAuto.Models.Produit
+
+@{
+    ViewData["Title"] = $"Détails du produit {Model.Nom} - Garage Carr'auto";
+}
+
+@section Styles {
+    <style>
+        .product-details {
+            padding: 40px 0;
+        }
+        .product-image {
+            border-radius: 10px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            max-height: 400px;
+            object-fit: cover;
+            width: 100%;
+        }
+        .product-info {
+            padding: 20px;
+        }
+        .product-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        .price-promotion {
+            text-decoration: line-through;
+            color: var(--gray-color);
+            margin-right: 10px;
+        }
+        .stock-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .in-stock {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .out-of-stock {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .product-category {
+            display: inline-block;
+            background-color: var(--light-gray);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .action-buttons {
+            margin-top: 30px;
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+}
+
+<section class="page-hero" style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/images/products-hero.jpg') no-repeat center center/cover;">
+    <div class="container">
+        <div class="hero-content text-center">
+            <h1>@Model.Nom</h1>
+            <p class="lead">Détails du produit</p>
+        </div>
+    </div>
+</section>
+
+<div class="container product-details">
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="@Model.ImageUrl" class="product-image" alt="@Model.Nom" />
+            }
+            else
+            {
+                <img src="/images/products/default-product.jpg" class="product-image" alt="@Model.Nom" />
+            }
+        </div>
+        <div class="col-md-6 product-info">
+            <h2>@Model.Nom</h2>
+            
+            @if (Model.CategorieProduit != null)
+            {
+                <div class="product-category">
+                    <i class="fas fa-tag"></i> @Model.CategorieProduit.Nom
+                </div>
+            }
+            
+            <div class="product-price">
+                @if (Model.EnPromotion && Model.PrixPromotion.HasValue)
+                {
+                    <span class="price-promotion">@Model.Prix.ToString("C")</span>
+                    <span>@Model.PrixPromotion.Value.ToString("C")</span>
+                }
+                else
+                {
+                    <span>@Model.Prix.ToString("C")</span>
+                }
+            </div>
+            
+            <p class="product-description">@Model.Description</p>
+            
+            @if (Model.EnStock)
+            {
+                <div class="stock-badge in-stock">
+                    <i class="fas fa-check-circle"></i> En stock (@Model.QuantiteStock disponibles)
+                </div>
+            }
+            else
+            {
+                <div class="stock-badge out-of-stock">
+                    <i class="fas fa-times-circle"></i> Rupture de stock
+                </div>
+            }
+            
+            <div class="action-buttons">
+                <a asp-action="Index" class="btn btn-outline-secondary">Retour aux produits</a>
+                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                {
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Modifier</a>
+                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Supprimer</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="related-products section-padding bg-light">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">Ces produits pourraient vous intéresser</h2>
+        <div class="row">
+            <!-- Cette section pourrait être améliorée pour afficher dynamiquement des produits similaires -->
+            <div class="col-12 text-center">
+                <a asp-action="Index" class="btn btn-primary">Voir tous nos produits</a>
+            </div>
+        </div>
+    </div>
+</section>

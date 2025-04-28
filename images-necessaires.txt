@@ -1,0 +1,43 @@
+LISTE DES IMAGES NÉCESSAIRES POUR LE SITE CARR'AUTO
+
+=== IMAGES D'ACCUEIL ET BANNIÈRES ===
+wwwroot/images/home/hero-banner.jpg - Banner principal de la page d'accueil
+wwwroot/images/home/histoire-banner.jpg - Bannière pour la page Histoire
+wwwroot/images/home/contact-banner.jpg - Bannière pour la page Contact
+wwwroot/images/home/garage-photo.jpg - Photo du garage pour la page d'accueil
+wwwroot/images/home/team.jpg - Photo de l'équipe du garage
+
+=== IMAGES DE PRODUITS ===
+wwwroot/images/products/products-hero.jpg - Bannière principale pour la page Produits
+wwwroot/images/products/huile-syntec.jpg - Huile moteur Syntec 5W-30
+wwwroot/images/products/essuie-glaces.jpg - Jeu d'essuie-glaces universel
+wwwroot/images/products/filtre-air.jpg - Filtre à air K&N
+wwwroot/images/products/batterie.jpg - Batterie Exide 12V
+wwwroot/images/products/default-product.jpg - Image par défaut pour les produits
+
+=== IMAGES DE VÉHICULES ===
+wwwroot/images/vehicles/vehicles-hero.jpg - Bannière principale pour la page Véhicules
+wwwroot/images/vehicles/car-default.jpg - Image par défaut pour les véhicules
+wwwroot/images/vehicles/vehicle1.jpg - Véhicule d'occasion 1
+wwwroot/images/vehicles/vehicle2.jpg - Véhicule d'occasion 2
+wwwroot/images/vehicles/vehicle3.jpg - Véhicule d'occasion 3
+wwwroot/images/vehicles/vehicle4.jpg - Véhicule d'occasion 4
+
+=== IMAGES DE SERVICES ===
+wwwroot/images/services/services-hero.jpg - Bannière principale pour la page Services
+wwwroot/images/services/oil-change.jpg - Service de vidange d'huile
+wwwroot/images/services/tire-mounting.jpg - Service de montage et équilibrage de pneus
+wwwroot/images/services/diagnostic.jpg - Service de diagnostic électronique
+wwwroot/images/services/ac-service.jpg - Service de recharge de climatisation
+
+=== SOURCES RECOMMANDÉES POUR TÉLÉCHARGER DES IMAGES GRATUITES ===
+- Unsplash (https://unsplash.com) - Photos de haute qualité libres de droits
+- Pexels (https://pexels.com) - Photos et vidéos gratuites
+- Pixabay (https://pixabay.com) - Images et vidéos libres de droits
+- Freepik (https://freepik.com) - Images, vecteurs et PSD gratuits (certaines nécessitent une attribution)
+
+Instructions pour l'utilisation des images :
+1. Téléchargez des images correspondant aux descriptions ci-dessus
+2. Renommez-les exactement comme indiqué (par exemple "hero-banner.jpg")
+3. Placez-les dans les dossiers appropriés
+4. Assurez-vous que les images sont de taille et de qualité raisonnables (idéalement 1200-1800px de large)
